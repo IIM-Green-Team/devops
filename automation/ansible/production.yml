@@ -1,0 +1,15 @@
+- hosts: [production]
+  become: yes
+  remote_user: root
+  vars_files:
+    - ./inventory/group_vars/production/vault.yml
+  vars:
+    pip_install_packages:
+      - docker
+      - docker-compose
+
+  roles:
+    - { role: common, tags: [common] }
+    - { role: pip, tags: [pip] }
+    - { role: docker, tags: [docker]}
+    - { role: site, tags: [site]}

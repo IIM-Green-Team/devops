@@ -1,0 +1,13 @@
+version: "3.3"
+services:
+  client:
+    # image: '{{ site_docker_namespace }}/{{ site_client_image_environment }}:latest' 
+    image: nginx:1.18.0
+    restart: always
+    ports:
+      - '{{ site_client_default_port }}:80'
+      - '{{ site_client_ssl_port }}:443'
+    networks:
+      - api_net
+networks:
+  api_net:

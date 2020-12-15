@@ -1,0 +1,4 @@
+site_docker_namespace: rg.fr-par.scw.cloud/ecolo-web
+site_client_default_port: 80
+site_client_ssl_port: 443
+site_client_image_environment: zerodechet_client_production
