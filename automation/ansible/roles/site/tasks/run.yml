@@ -10,11 +10,18 @@
     dest: /opt/app/docker-compose.yml
   become: yes
 
+- name: Copying conf files
+  synchronize:
+    src: templates/nginx
+    dest: /opt/app
+  become: yes
+
 - name: Login to private docker registry
   docker_login:
     registry_url: '{{ site_docker_registry }}'
     username: '{{ scaleway_registry_login }}'
-    password: '{{scaleway_secret_key }}'
+    password: '{{ scaleway_secret_key }}'
+
 - name: Run services
   docker_compose:
     project_name: 'zerodechet'
