@@ -2,7 +2,7 @@
   become: yes
   remote_user: root
   vars_files:
-    - ./inventory/group_vars/production/vault.yml
+    - ./inventory/group_vars/production/production.vault.yml
   vars:
     pip_install_packages:
       - docker

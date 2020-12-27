@@ -9,7 +9,49 @@ services:
       - '{{ site_client_ssl_port }}:443'
     networks:
       - client_net
+      - server_net
     volumes:
       - ./nginx/:/etc/nginx/conf.d
+  server:
+    hostname: server
+    image: '{{ site_docker_registry }}/{{ site_api_image_environment }}:latest'
+    restart: always
+    ports:
+      - '{{ site_server_default_port }}:9000'
+    environment:
+      APP_ENV: prod
+      APP_SECRET: 9b9156d2a9a86c6bdfd9a07102545fc3
+      DATABASE_URL: 'mysql:{{ database_username }}:{{ database_password }}@mariadb_green:{{ database_port }}/{{ database_name }}'
+      DATABASE_NAME: '{{ database_name }}'
+    networks:
+      - server_net
+      - db_net
+  mariadb:
+    container_name: mariadb_green
+    hostname: mariadb_green
+    image: mariadb:10.5
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: '{{ database_root_password }}'
+      MYSQL_DATABASE: '{{ database_name }}'
+      MYSQL_USER: '{{ database_username }}'
+      MYSQL_PASSWORD: '{{ database_password }}'
+    networks:
+      - db_net  
+    volumes:
+      - /opt/data/mysql:/var/lib/mysql
+  redis:
+    hostname: redis_green
+    container_name: redis-cache
+    image: redis:6.0
+    ports:
+      - 6379:6379
+    networks:
+      - server_net
+    environment:
+      REDIS_REPLICATION_MODE: master
 networks:
   client_net:
+  server_net:
+  db_net:
