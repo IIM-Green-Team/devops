@@ -17,7 +17,7 @@ services:
     image: '{{ site_docker_registry }}/{{ site_api_image_environment }}:latest'
     restart: always
     ports:
-      - '{{ site_server_default_port }}:9000'
+      - '{{ site_server_default_port }}:8080'
     environment:
       APP_ENV: prod
       APP_SECRET: 9b9156d2a9a86c6bdfd9a07102545fc3
@@ -26,6 +26,8 @@ services:
     networks:
       - server_net
       - db_net
+    depends_on:
+      - mariadb
   mariadb:
     container_name: mariadb_green
     hostname: mariadb_green
@@ -41,16 +43,11 @@ services:
       - db_net  
     volumes:
       - /opt/data/mysql:/var/lib/mysql
-  redis:
-    hostname: redis_green
-    container_name: redis-cache
-    image: redis:6.0
-    ports:
-      - 6379:6379
-    networks:
-      - server_net
-    environment:
-      REDIS_REPLICATION_MODE: master
+    healthcheck:
+      test: ["CMD-SHELL", 'mysqladmin ping']
+      interval: 10s
+      timeout: 2s
+      retries: 10
 networks:
   client_net:
   server_net:
