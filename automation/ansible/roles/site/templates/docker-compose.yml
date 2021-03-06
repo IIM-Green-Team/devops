@@ -12,6 +12,7 @@ services:
       - server_net
     volumes:
       - ./nginx/:/etc/nginx/conf.d
+      - /etc/letsencrypt/:/etc/letsencrypt/
   server:
     hostname: server
     image: '{{ site_docker_registry }}/{{ site_api_image_environment }}:latest'

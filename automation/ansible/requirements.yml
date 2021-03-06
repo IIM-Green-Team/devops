@@ -6,3 +6,6 @@
   src: geerlingguy.pip
   version: 2.0.0
 
+- name: certbot
+  src: geerlingguy.certbot
+  version: 3.1.0

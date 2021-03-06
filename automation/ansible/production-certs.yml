@@ -1,0 +1,17 @@
+- hosts: [production]
+  become: yes
+  remote_user: root
+  vars_files:
+    # certbot_admin_email
+    - ./inventory/group_vars/production/production.vault.yml
+  vars:
+    certbot_create_if_missing: True
+    certbot_create_standalone_stop_services: 
+      - docker
+    certbot_certs:
+      - domains:
+          - zerodechet.io
+          - admin.zerodechet.io
+          - api.zerodechet.io
+  roles:
+    - { role: certbot, tags: [certbot]}
