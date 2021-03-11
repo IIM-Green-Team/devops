@@ -52,6 +52,7 @@ services:
       retries: 10
   strapi:
     container_name: strapi
+    hostname: strapi
     restart: always
     image: '{{ site_docker_registry }}/{{ site_strapi_image_environment }}:latest'
     environment:
