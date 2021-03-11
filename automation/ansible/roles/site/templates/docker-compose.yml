@@ -10,6 +10,7 @@ services:
     networks:
       - client_net
       - server_net
+      - strapi_net
     volumes:
       - ./nginx/:/etc/nginx/conf.d
       - /etc/letsencrypt/:/etc/letsencrypt/
@@ -67,6 +68,7 @@ services:
       - '{{ strapi_app_port }}:1337'
     networks:
       - strapi_db_net
+      - strapi_net
     volumes:
       - ./app:/srv/app
     depends_on:
@@ -89,5 +91,6 @@ services:
 networks:
   client_net:
   server_net:
+  strapi_net:
   db_net:
   strapi_db_net:
