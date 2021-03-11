@@ -13,5 +13,7 @@
           - zerodechet.io
           - admin.zerodechet.io
           - api.zerodechet.io
+          - contrib.zerodechet.io
+          - blog.zerodechet.io
   roles:
     - { role: certbot, tags: [certbot]}

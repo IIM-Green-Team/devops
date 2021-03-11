@@ -33,6 +33,7 @@ services:
     container_name: mariadb_green
     hostname: mariadb_green
     image: mariadb:10.5
+    restart: always
     ports:
       - 3306:3306
     environment:
