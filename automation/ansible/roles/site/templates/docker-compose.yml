@@ -49,7 +49,43 @@ services:
       interval: 10s
       timeout: 2s
       retries: 10
+  strapi:
+    container_name: strapi
+    restart: always
+    image: '{{ site_docker_registry }}/{{ site_strapi_image_environment }}:latest'
+    environment:
+      NODE_ENV: production
+      DATABASE_CLIENT: postgres
+      DATABASE_HOST: strapi_db
+      DATABASE_PORT: '{{ strapi_db_port }}'
+      DATABASE_NAME: '{{ strapi_db_name }}'
+      DATABASE_USERNAME: '{{ strapi_db_user }}'
+      DATABASE_PASSWORD: '{{ strapi_db_pwd }}'
+    ports:
+      - '{{ strapi_app_port }}:1337'
+    networks:
+      - strapi_db_net
+    volumes:
+      - ./app:/srv/app
+    depends_on:
+      - strapi_db
+    command: 'strapi start'
+  strapi_db:
+    container_name: postgres
+    image: postgres
+    restart: always
+    volumes:
+      - ./db:/var/lib/postgresql/data
+    ports:
+      - '{{ strapi_db_port }}:5432'
+    environment:
+      POSTGRES_USER: '{{ strapi_db_user }}'
+      POSTGRES_PASSWORD: '{{ strapi_db_pwd }}'
+      POSTGRES_DB: '{{ strapi_db_name }}'
+    networks:
+      - strapi_db_net
 networks:
   client_net:
   server_net:
   db_net:
+  strapi_db_net:
