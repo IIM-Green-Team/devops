@@ -58,7 +58,7 @@ services:
     image: '{{ site_docker_registry }}/{{ site_strapi_image_environment }}:latest'
     environment:
       NODE_ENV: production
-      DATABASE_CLIENT: postgres
+      DATABASE_CLIENT: mysql
       DATABASE_HOST: strapi_db
       DATABASE_PORT: '{{ strapi_db_port }}'
       DATABASE_NAME: '{{ strapi_db_name }}'
@@ -75,19 +75,20 @@ services:
       - strapi_db
     command: 'strapi start'
   strapi_db:
-    container_name: postgres
-    image: postgres
+    image: mariadb:10.5
+    container_name: strapi_db
     restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: '{{ strapi_root_db_pwd }}'
+      MYSQL_PASSWORD: '{{ strapi_db_pwd }}'
+      MYSQL_USER: '{{ strapi_db_user }}'
+      MYSQL_DATABASE: '{{ strapi_db_name }}'
+    networks:
+      - strapi_db_net
     volumes:
       - ./db:/var/lib/postgresql/data
     ports:
-      - '{{ strapi_db_port }}:5432'
-    environment:
-      POSTGRES_USER: '{{ strapi_db_user }}'
-      POSTGRES_PASSWORD: '{{ strapi_db_pwd }}'
-      POSTGRES_DB: '{{ strapi_db_name }}'
-    networks:
-      - strapi_db_net
+      - '{{ strapi_db_port }}:27017'
 networks:
   client_net:
   server_net:
