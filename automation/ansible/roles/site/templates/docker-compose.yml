@@ -86,7 +86,7 @@ services:
     networks:
       - strapi_db_net
     volumes:
-      - ./db:/var/lib/postgresql/data
+      - strapi_db_data:/var/lib/mysql
     ports:
       - '{{ strapi_db_port }}:3306'
 networks:
@@ -95,3 +95,6 @@ networks:
   strapi_net:
   db_net:
   strapi_db_net:
+volumes:
+  strapi_db_data:
+    driver: local
