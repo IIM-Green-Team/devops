@@ -8,6 +8,11 @@
     certbot_create_if_missing: True
     certbot_create_standalone_stop_services: 
       - docker
+    certbot_auto_renew: true
+    certbot_auto_renew_user: "root"
+    certbot_auto_renew_hour: "3"
+    certbot_auto_renew_minute: "30"
+    certbot_auto_renew_options: "--quiet --no-self-upgrade"
     certbot_certs:
       - domains:
           - zerodechet.io

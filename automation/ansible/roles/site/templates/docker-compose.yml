@@ -19,7 +19,7 @@ services:
     image: '{{ site_docker_registry }}/{{ site_api_image_environment }}:latest'
     restart: always
     ports:
-      - '{{ site_server_default_port }}:8080'
+      - '{{ site_server_default_port }}:9000'
     environment:
       APP_ENV: prod
       APP_SECRET: 9b9156d2a9a86c6bdfd9a07102545fc3
@@ -51,6 +51,16 @@ services:
       interval: 10s
       timeout: 2s
       retries: 10
+    redis:
+      hostname: redis_green
+      container_name: redis-cache
+      image: redis:6.0
+      ports:
+        - 6379:6379
+      networks:
+        - server_net
+      environment:
+        REDIS_REPLICATION_MODE: master
   strapi:
     container_name: strapi
     hostname: strapi
@@ -95,6 +105,3 @@ networks:
   strapi_net:
   db_net:
   strapi_db_net:
-volumes:
-  strapi_db_data:
-    driver: local
