@@ -51,16 +51,16 @@ services:
       interval: 10s
       timeout: 2s
       retries: 10
-    redis:
-      hostname: redis_green
-      container_name: redis-cache
-      image: redis:6.0
-      ports:
-        - 6379:6379
-      networks:
-        - server_net
-      environment:
-        REDIS_REPLICATION_MODE: master
+  redis:
+    hostname: redis_green
+    container_name: redis-cache
+    image: redis:6.0
+    ports:
+      - 6379:6379
+    networks:
+      - server_net
+    environment:
+      REDIS_REPLICATION_MODE: master
   strapi:
     container_name: strapi
     hostname: strapi
